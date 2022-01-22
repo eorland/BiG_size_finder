@@ -54,7 +54,7 @@ for product in product_links:
     
     #table = jean_soup.find_all('div',{'class':'rte'})
 
-
+print('this is the dev commit')
 
 
     #all_a = soup.find_all('a',{'class':'grid-product__link'},href=True)
