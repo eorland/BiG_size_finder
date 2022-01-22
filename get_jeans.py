@@ -53,7 +53,7 @@ for product in product_links:
         #print(p.find_all('span',class_='product__price'))
     
     #table = jean_soup.find_all('div',{'class':'rte'})
-
+print(product_dict)
 
 
 
