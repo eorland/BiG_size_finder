@@ -8,6 +8,7 @@ Created on Sat Jan 22 12:03:30 2022
 
 import requests
 from bs4 import BeautifulSoup
+import numpy as np
 #import BeautifulSoup
 
 base_url = 'https://blueingreensoho.com'
@@ -35,7 +36,7 @@ for link in page_urls:
         product_links.append(base_url+a['href'])
 
 
-for product in product_links:
+for product in product_links[:1]:
     jean = requests.get(product)
     jean_soup = BeautifulSoup(jean.text, 'html.parser')
     #price = jean_soup.find_all('div',{'class':'product-block product-block--price'})
@@ -52,9 +53,36 @@ for product in product_links:
         #nums = [int(i) for i in p_str.split() if i.isdigit()]
         #print(p.find_all('span',class_='product__price'))
     
-    #table = jean_soup.find_all('div',{'class':'rte'})
+    table = jean_soup.find_all('div',{'class':'rte'})
+    rows = []
+    for t in table:
+        contents = t.find_all('tr')
+        for row in contents:
+            rows.append(row.text.strip().replace("\n", ", "))
+    sizes =  {}
 
-print('this is the dev commit')
+    for row in rows:
+        row = row.split(',') # convert string to list
+        key, value = row[0], [float(item.strip()) for item in row[1:]]
+        if key in sizes.keys():
+            sizes[key].append(value)
+            #print("key already present")
+            continue
+        sizes[key] = value
+    
+    for key, value in sizes.items():
+        list_of_arrays = [np.asarray(val).reshape(-1) for val in value]
+        val_list = []
+        for item in list_of_arrays:
+            for i in item:
+                val_list.append(i)
+        
+        sizes[key] = val_list
+
+        
+        
+
+#print('this is the dev commit')
 
 
     #all_a = soup.find_all('a',{'class':'grid-product__link'},href=True)
