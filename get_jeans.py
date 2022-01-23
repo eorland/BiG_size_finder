@@ -36,7 +36,7 @@ for link in page_urls:
         product_links.append(base_url+a['href'])
 
 
-for product in product_links[:1]:
+for product in product_links:
     jean = requests.get(product)
     jean_soup = BeautifulSoup(jean.text, 'html.parser')
     #price = jean_soup.find_all('div',{'class':'product-block product-block--price'})
@@ -62,13 +62,34 @@ for product in product_links[:1]:
     sizes =  {}
 
     for row in rows:
-        row = row.split(',') # convert string to list
-        key, value = row[0], [float(item.strip()) for item in row[1:]]
+        row = row.split(',')
+        key, values = row[0], row[1:]
+        print('orig vals:', values, 'for', key)
+        #print(values.replace(' ',''))# convert string to list
+        new_vals = []
+        for value in values:
+            # delete spaces, extra characters
+            v = value.replace(' ','').replace('~','').replace('-','')
+            if v.isnumeric():
+                new_vals.append(float(v))
+            else:
+                #print(v)
+                if len(v)==0: # handle missing vals
+                    new_vals.append(np.nan)
+                if len(v)>0: # handle weird alphanumeric strings
+                    if v.isalpha():
+                        new_vals.append(v)
+                    else:
+                        new_vals.append(float(v[:2]))
+                
+                
+        print("new vals:", new_vals)
+        #key, value = row[0], [float(item.strip()) for item in row[1:]]
         if key in sizes.keys():
-            sizes[key].append(value)
+            sizes[key].append(new_vals)
             #print("key already present")
             continue
-        sizes[key] = value
+        sizes[key] = new_vals
     
     for key, value in sizes.items():
         list_of_arrays = [np.asarray(val).reshape(-1) for val in value]
@@ -80,7 +101,7 @@ for product in product_links[:1]:
         sizes[key] = val_list
 
         
-        
+    product_dict[jean_name]['sizes'] = sizes
 
 #print('this is the dev commit')
 
