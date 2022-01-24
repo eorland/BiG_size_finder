@@ -102,6 +102,9 @@ for product in product_links:
 
         
     product_dict[jean_name]['sizes'] = sizes
+    product_dict[jean_name]['link'] = product
+
+
 
 #print('this is the dev commit')
 
