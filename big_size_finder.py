@@ -27,7 +27,6 @@ class Finder:
 
     def build(self):
         d = build()
-        print(d['AI-013 17oz Natural Indigo Slim Tapered (Blue In Green Version)'])
         df = pd.DataFrame()
         for key in d.keys():
             sizes = d[key]['sizes']
