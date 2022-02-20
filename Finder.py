@@ -19,6 +19,7 @@ Created on Sun Jan 23 12:17:23 2022
 #import numpy as np
 from build_table import build
 import pandas as pd
+import numpy as np
 
 class Finder:
     def __init__(self):
@@ -39,13 +40,11 @@ class Finder:
         self.Build = True
     
 
-    def find(self,waist,f_rise,b_rise,thigh,knee,hem,inseam):
+    def find(self,waist,f_rise,b_rise,thigh,knee,hem,inseam,tol=1):
         assert self.Build==True, "use build() before find()!"
         req = pd.Series(['USER', waist, f_rise, b_rise,
                    thigh, knee, hem, inseam])
         
-        
-        #print(self.products.index.get_level_values(0))
         candidates = {}
         for name in self.products.index.get_level_values(0).unique():
             
@@ -61,19 +60,23 @@ class Finder:
             # transpose
             t = copy.T.set_index('TAGGED SIZE')
             
-            # separate user and size indo
+            # separate user and size info
             user = t.loc['USER']
             inventory = t.drop('USER')
             
             # take differences 
             abs_diff = inventory.sub(user.values).abs().astype(float)
-            mins = abs_diff.idxmin() # get sizes of closest values
+            #mins = abs_diff.min()
+            #mins[mins<tol] = np.nan
+            #mins_idx = abs_diff.idxmin() # get sizes of closest values
+            mins = pd.DataFrame(abs_diff.min(),columns=['Mins'])
+            mins['idx'] = abs_diff.idxmin()
+            mins[mins['Mins']>tol] = np.nan
             cnts = mins.value_counts() # get counts of unique sizes
             if cnts.max()>=3: # if the same size is close 3 times, add it
-                candidates[name] = {'size':cnts.idxmax(),
+                candidates[name] = {'size':cnts.idxmax()[1],
+                                    'measurements': t.loc[cnts.idxmax()[1]],
                                     'Price': self.products.loc[name]['PRICE'].max()}
-            
-            
             
             
         return candidates
