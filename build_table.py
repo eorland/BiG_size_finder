@@ -43,6 +43,7 @@ def build():
         name = jean_soup.find_all('div',{'class':'product-section'})
         for n in name:
             jean_name = n['data-product-title']
+            #print('name:',jean_name)
         #name = jean_soup.find_all('data-product-title')
         
         price = jean_soup.find_all('span',class_='product__price')
@@ -59,13 +60,17 @@ def build():
         rows = []
         for t in table:
             contents = t.find_all('tr') 
+            #print('contents:',contents)
             for row in contents:
                 # get each entry as comma separated value
-                rows.append(row.text.strip().replace("\n", ", "))
+                #print(row)
+                item = row.text.strip().replace("\n", ", ")
+                #print(item)
+                rows.append(item)
         
         sizes =  {}
 
-        
+        #print(rows)
         # ugly code for brute force cleaning
         for row in rows:
             row = row.split(',') # convert string to list
@@ -75,22 +80,27 @@ def build():
             for value in values: # need to parse through each entry and clean
                 # delete spaces, extra characters
                 v = value.replace(' ','').replace('~','').replace('-','')
+                #print(v)
+                #print(type(v))
                 #if value=='':
                 #    new_vals.append(np.nan)
                 #    continue
-                if v.isnumeric(): # if just number, add it
+                if v.replace('.','').isnumeric(): # if just number, add it
+                    #print(v)    
                     new_vals.append(float(v))
                 else:
                     if len(v)==0: # handle missing vals
                         continue
                     if len(v)>0: # handle weird alphanumeric strings
                         if v.isalpha(): # for sizes "S", "M", "L", etc.
+                            print(v) 
                             new_vals.append(v)
                         else: # for cases when size is 32x32, 34x32, etc.
                             new_vals.append(float(v[:2])) # just get the waist
                     
                     
             #print("new vals:", new_vals)
+            #print('\n')
             #key, value = row[0], [float(item.strip()) for item in row[1:]]
             # back to keys, enter the cleaned measurements for each category
             if key in sizes.keys():
@@ -113,3 +123,4 @@ def build():
         product_dict[jean_name]['link'] = product
 
     return product_dict
+build()
