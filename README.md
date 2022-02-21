@@ -57,4 +57,4 @@ KNEE            7.75
 LEG OPENING      6.5
 INSEAM          34.0
 ```
-**Last note: I do not plan on regularly mantaining this repo in favor of other projects. Feel free to fork this repo and mantain as you please.**
+**Note: I do not plan on regularly mantaining this repo in favor of other projects. Feel free to fork this repo and mantain as you please.**
