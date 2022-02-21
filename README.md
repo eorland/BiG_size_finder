@@ -7,12 +7,14 @@ Two of them ([Self Edge](https://www.selfedge.com/) and [Blue Owl](https://www.b
 On the other hand, I did not notice that Blue in Green (BiG) had one, so I made a tool to do just that. 
 
 *This is a bare bones, web-scraper which looks at the products on their
-site, records the relevent information about each product and its size run, and return the jeans with the closest matches to your size criteria.*
+site, records the relevent information about each product and its size run, and returns the jeans with the closest matches to your size criteria.*
 
 Note: This tool is meant as a proof-of-concept and is only functional so long as the structure of the webpage holds. This may change at any time. I have no affiliation with BiG
-and simply wanted to try to make a similar tool as those that I've seen elsewhere.
+and simply wanted to try to make a similar tool to those that I've seen elsewhere.
 
-To use, open your command line or any Python IDE and run the following: 
+## Usage
+
+Open your terminal or any Python IDE and run the following: 
 
 ```>>> from big_size_finder import Finder```
 
