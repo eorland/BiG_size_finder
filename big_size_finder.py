@@ -128,9 +128,6 @@ class Finder:
         else: 
             return
 
-#f = Finder()
-#f.build()
-#req = f.find(31.5,10.75,None,11.25,None,5.75,33,tol=2)
 
 
 
