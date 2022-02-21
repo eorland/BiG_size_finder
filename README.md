@@ -9,7 +9,7 @@ On the other hand, I couldn't find one on the Blue in Green website, so I made a
 *This is a bare bones, web-scraper which looks at the products on their
 site, records the relevent information about each product and its size run, and returns the jeans with the closest matches to your size criteria.*
 
-Note: This tool is meant as a proof-of-concept and is only functional so long as the structure of the webpage holds. This may change at any time. I have no affiliation with BiG
+This tool is meant as a proof-of-concept and is only functional so long as the structure of the webpage holds. This may change at any time. I have no affiliation with BiG
 and simply wanted to try to make a similar tool to those that I've seen elsewhere.
 
 ## Usage
