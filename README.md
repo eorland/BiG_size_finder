@@ -22,7 +22,10 @@ To use, open your command line or any Python IDE and run the following:
 
 ```>>> finder.find(waist=31.5,f_rise=11,thigh=11,inseam=34) # not all options shown```
 
-``` Found the following model(s):
+This produces the following output (other entries ommitted for brevity):
+
+``` 
+Found the following model(s):
 
 AI-013 17oz Natural Indigo Slim Tapered (Blue In Green Version) in size 32.0 ($659.00).
 
@@ -54,3 +57,4 @@ KNEE            7.75
 LEG OPENING      6.5
 INSEAM          34.0
 ```
+**Last note: I do not plan on regularly mantaining this repo in favor of other projects. Feel free to fork this repo and mantain as you please.**
