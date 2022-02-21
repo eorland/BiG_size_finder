@@ -1,5 +1,5 @@
 # BiG_size_finder
-Bottom line up front: simple Python to find the best fitting jean at the high end denim shop, [Blue in Green (BiG)](https://blueingreensoho.com/). 
+Bottom line up front: simple Python tool to find the best fitting jean at the high end denim shop, [Blue in Green (BiG)](https://blueingreensoho.com/). 
 
 **More info:** 
 There are three main stores in the United States which are well known for carrying high-end Japanese denim. 
