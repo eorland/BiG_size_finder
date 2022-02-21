@@ -14,7 +14,7 @@ and simply wanted to try to make a similar tool as those that I've seen elsewher
 
 To use, open your command line or any Python IDE and run the following: 
 
-```>>> from BiG_size_finder import Finder```
+```>>> from big_size_finder import Finder```
 
 ```>>> finder = Finder() # create finder instance```
 
