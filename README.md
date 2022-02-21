@@ -4,7 +4,7 @@ Bottom line up front: simple Python tool to find the best fitting pair of jeans 
 **More info:** 
 There are three main stores in the United States which are well known for carrying high-end Japanese denim. 
 Two of them ([Self Edge](https://www.selfedge.com/) and [Blue Owl](https://www.blueowl.us/)) have their own tools for you to enter your desired measurements and they search their inventory for the closest matches to your ideal jean. 
-On the other hand, I did not notice that Blue in Green (BiG) had one, so I made a tool to do just that. 
+On the other hand, I couldn't find one on the Blue in Green website, so I made a tool to do just that. 
 
 *This is a bare bones, web-scraper which looks at the products on their
 site, records the relevent information about each product and its size run, and returns the jeans with the closest matches to your size criteria.*
