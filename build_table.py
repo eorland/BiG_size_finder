@@ -3,7 +3,7 @@
 """
 Created on Sun Jan 23 12:23:38 2022
 
-@author: eliorland
+@author: eorland
 """
 
 import requests
@@ -11,6 +11,20 @@ from bs4 import BeautifulSoup
 import numpy as np
 
 def build():
+    '''
+    Function that scrapes the Blue in Green website for their jean stock
+    and corresponding attributes. The patterns for pulling the requisite 
+    product urls, prices, and measurements are website specific and are 
+    current as of the creation of this code. 
+    
+    They are subject to change without warning.
+
+    Returns
+    -------
+    product_dict : dictionary
+        Simple dictionary storing all relevent product attributes.
+    '''
+    
     base_url = 'https://blueingreensoho.com'
     url = 'https://blueingreensoho.com/collections/denim?filter.p.product_type=Jeans'
     site = requests.get(url)
@@ -22,29 +36,27 @@ def build():
     product_links = []
     product_dict = {}
 
-    for page in pages:
+    for page in pages: # all product pages(1,2,3, etc.)
         content = page.find_all('a',href=True)
         for a in content:
-            #print(a['href'])
             page_urls.append(base_url+a['href'])
-    for link in page_urls:
-        site = requests.get(link)
+    
+    for link in page_urls: # get all products from each page
+        site = requests.get(link) 
         soup = BeautifulSoup(site.text, 'html.parser')
+        # 'grid-product__link' == product link (go figure.)
         all_a = soup.find_all('a',{'class':'grid-product__link'},href=True)
-        #all_a = soup.find_all('a',href=True)
         for a in all_a:
             product_links.append(base_url+a['href'])
 
-
-    for product in product_links[:5]:
+    # look at each product, pull relevent info.
+    for product in product_links:
         jean = requests.get(product)
         jean_soup = BeautifulSoup(jean.text, 'html.parser')
-        #price = jean_soup.find_all('div',{'class':'product-block product-block--price'})
+        
         name = jean_soup.find_all('div',{'class':'product-section'})
         for n in name:
             jean_name = n['data-product-title']
-            #print('name:',jean_name)
-        #name = jean_soup.find_all('data-product-title')
         
         price = jean_soup.find_all('span',class_='product__price')
         for p in price:
@@ -60,48 +72,38 @@ def build():
         rows = []
         for t in table:
             contents = t.find_all('tr') 
-            #print('contents:',contents)
+
             for row in contents:
                 # get each entry as comma separated value
-                #print(row)
                 item = row.text.strip().replace("\n", ", ")
-                #print(item)
                 rows.append(item)
         
         sizes =  {}
 
-        #print(rows)
         # ugly code for brute force cleaning
         for row in rows:
             row = row.split(',') # convert string to list
+            # keys are the jean attribute (waist, thigh, knee, tag size, etc)
+            # values are the measurements for each
             key, values = row[0], [item.replace(' ','') for item in row[1:]]
-            #print('orig vals:', values, 'for', key)
             new_vals = []
             for value in values: # need to parse through each entry and clean
                 # delete spaces, extra characters
                 v = value.replace(' ','').replace('~','').replace('-','')
-                #print(v)
-                #print(type(v))
-                #if value=='':
-                #    new_vals.append(np.nan)
-                #    continue
-                if v.replace('.','').isnumeric(): # if just number, add it
-                    #print(v)    
+                
+                # if just number, add it. replace() method to handle floats
+                if v.replace('.','').isnumeric(): 
                     new_vals.append(float(v))
-                else:
+                
+                else: # exception handling
                     if len(v)==0: # handle missing vals
                         continue
                     if len(v)>0: # handle weird alphanumeric strings
                         if v.isalpha(): # for sizes "S", "M", "L", etc.
-                            print(v) 
                             new_vals.append(v)
                         else: # for cases when size is 32x32, 34x32, etc.
                             new_vals.append(float(v[:2])) # just get the waist
                     
-                    
-            #print("new vals:", new_vals)
-            #print('\n')
-            #key, value = row[0], [float(item.strip()) for item in row[1:]]
             # back to keys, enter the cleaned measurements for each category
             if key in sizes.keys():
                 sizes[key].append(new_vals)
@@ -119,8 +121,7 @@ def build():
             sizes[key] = val_list
 
             
-        product_dict[jean_name]['sizes'] = sizes
+        product_dict[jean_name]['sizes'] = sizes 
         product_dict[jean_name]['link'] = product
 
     return product_dict
-build()
